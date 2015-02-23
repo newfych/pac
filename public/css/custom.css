@@ -152,6 +152,8 @@ input[type=text],textarea {
     margin-top: 40px;
     margin-right: 40px;
     margin-left: 5%;
+    outline: none;
+    -moz-appearance: none;
     resize: none;
     padding: 0px 0px 0px 0px;
     background: rgba(0,0,0,0);
@@ -176,6 +178,8 @@ input[type=text],textarea {
 .users-panel{
     height: 400px;
     resize: none;
+    outline: none;
+    -moz-appearance: none;
     background: rgba(0,0,0,0);
 }
 .message-panel{

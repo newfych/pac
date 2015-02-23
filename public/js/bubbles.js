@@ -24,12 +24,13 @@
         var yPos = (getRandomInt(1, 15) + 10);
         var delay = (getRandomInt(3, 10) * 1000) + 15000;
         var zIndexType = getRandomInt(1, 100);
-        var zIndex = 0;
-        (zIndexType > 50) ? zIndex = -1 : zIndex;
         var floatSide = getRandomInt(1, 100);
         (floatSide > 50) ? yPos = 95 - yPos : yPos-3;
-        (floatSide > 50) ? zIndex = 0 : zIndex;
         var left = yPos.toString() + "%";
+        var zIndex = 0;
+        (zIndexType > 50) ? zIndex = -1 : zIndex;
+        (floatSide > 50) ? zIndex = 0 : zIndex;
+        if ($(".message-panel").length!=0){zIndex = -1;}
         var lifeTime = (getRandomInt(5, 12)*10).toString() + "%";
 
         bubble.clone().appendTo(bubbles)

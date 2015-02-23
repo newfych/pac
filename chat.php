@@ -20,21 +20,22 @@
 <body>
 <div>
     <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7 " id="half">
-        <textarea class="chat-area">
-            </textarea>
+        <div class="chat-area">
+            GHIGLJKBJGUIIVBI
         </div>
+    </div>
     <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5" >
         <div class="left-panel">
             <div class="users-panel">
-                <textarea class="users-panel">
+                <div class="users-panel">
                     DFSVSVSDVS
-                </textarea>
+                </div>
             </div>
             <div class="message-panel">
                 <input type="text" id="name" class="btn-lg" placeholder="Введите сообщение" autofocus>
             </div>
             <div class="message-button">
-                <button id="login-button" value="submit" class="btn btn-lg btn-primary btn-block" type="submit">Войти</button>
+                <button id="login-button" value="submit" class="btn btn-lg btn-primary btn-block" type="submit">Отправить</button>
             </div>
             <div class="smile-panel">
                 RRRRRRRRRRRRRRRRRRRRIIIIIIIITFIFVII
