@@ -189,5 +189,5 @@ input[type=text],textarea {
     position: absolute;
     bottom: 10%;
     left: 10%;
-    z-index: -10;
+    z-index: -1;
 }

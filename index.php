@@ -7,19 +7,27 @@
     <title>Губка Боб чат</title>
 
     <link href="public/css/bootstrap.css" rel="stylesheet" />
-    <link href="public/css/bootstrap.css" rel="stylesheet" />
     <link href="public/css/custom.css" rel="stylesheet" />
+
     <script src="public/js/jquery-2.1.3.js"></script>
     <script src="public/js/lib/jquery-ui.min.js"></script>
     <script src="public/js/src/jquery.textanimation.js"></script>
+
     <link rel="shortcut icon" href="favicon.png" />
 
 <body>
+<?
+if(isset($_SESSION['name'])){
+
+}
+
+
+?>
 <div class="container">
     <div class="row" id="row">
-        <div class="col-sm-6 col-md-6 col-sm-offset-3 login" >
-        <div class="text-center login-title demo" id="demo_roll2">Войти в чат Губки Боба</div>
-            </div>
+        <div class="col-sm-6 col-md-6 col-sm-offset-2 hidden-xs login" >
+            <div class="text-center login-title demo" id="demo_roll2">  Войти в чат Губки Боба</div>
+        </div>
         <div class="col-sm-6 col-md-4 col-md-offset-4 login" id="login-form">
             <div class="account-wall" id="wall" style="display:none;">
                 <img class="profile-img" src="public/img/Edit.png">
@@ -40,7 +48,7 @@
         <img class="img-responsive" src="public/img/wellcome.png" width="400px" height="400px">
     </div>
     <div class="col-sm-6 col-md-4 hidden-xs col-md-offset-3 login">
-        <img class="img-responsive" src="public/img/patrick.png" width="200px" height="200px">
+        <img class="img-responsive" style="z-index: -30" src="public/img/patrick.png" width="200px" height="200px">
     </div>
 </div>
 
@@ -48,48 +56,52 @@
     <h5 class="footer text-center">&copy Rusinov Alexandr 2015</h5>
 </div>
 <div id="bubbles">
-    <img class="bubble" id="bubble" width="200px" height="200px" src="public/img/bubble_blue.png" >
+    <img class="bubble" id="bubble" style="display:none;" width="200px" height="200px" src="public/img/bubble_blue.png" >
 </div>
 </body>
 <script>
-    $(function(){
-
+    $(function() {
+        createBubbles();
+        setBubbles();
         var wall = $("#wall");
         wall.fadeIn(1000);
-
-//        var bubbles = $("#bubbles");
-//        var bubble2 = bubble.clone().appendTo(bubbles);
-
-        var bubble = $("#bubble");
-        bubble.css({"left": "20", "bottom": "0"});
-        bubble.animate({"bottom": "120%"}, { queue:false, duration:3000 });
     });
 
-    function setBubbles(){
-        setInterval(function(){
-            createBubbles();
-        }, getRandomInt(3, 7)*1000)
+    function setBubbles() {
+        setInterval(function(){createBubbles();},
+            getRandomInt(3, 7)*200)
     }
 
-    function createBubbles(){
+    function createBubbles() {
+        console.log('inside Create');
         var bubbles = $("#bubbles");
         var bubble = $("#bubble");
-        var len = getRandomInt(5, 10);
-        var bubblesArray = [];
-        for (i=0; i<len; i++){
-            var size = (getRandomInt(3, 7)/5);
-//            bubblesArray[i] = bubble.clone().appendTo(bubbles);
-            bubble.clone()
-                .css({"width": size, "height": size})
-                .animate({"bottom": "120%"}, { queue:false, duration:3000 });
-        }
+        var initSize = 3;
+        var aspect = $( window ).height()/$( window ).width();
+        var initW = initSize.toString() + "%";
+        var initH = (initSize / aspect).toString() + "%";
+        var size = getRandomInt(3, 7);
+        var w = size.toString() + "%";
+        var h = (size / aspect).toString() + "%";
+        var yPos = (getRandomInt(1, 15) + 10);
+        var delay = (getRandomInt(3, 10) * 1000) + 15000;
+        var floatSide = getRandomInt(1, 100);
+        (floatSide > 50) ? yPos = 95 - yPos : yPos;
+        var left = yPos.toString() + "%";
+        var zIndexType = getRandomInt(1, 100);
+        var zIndex = 0;
+        (zIndexType > 50) ? zIndex = -1 : zIndex;
 
-
-
+        bubble.clone().appendTo(bubbles)
+            .css({"z-index": zIndex, "width": initW, "height": initH,"left": left, "bottom": "10%"})
+            .animate({"bottom": "120%","width": w , "height": h},
+            {queue: false, duration: delay});
     }
+
     function getRandomInt(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
+
 
 
 </script>
@@ -100,7 +112,7 @@
         });
         $("div#demo_roll2").textAnimation({
             mode: "roll",
-            minsize: 25,
+            minsize: 30,
             maxsize: 25,
             magnification: 10,
             fixed: "top",
