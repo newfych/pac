@@ -1,94 +1,80 @@
 <!doctype html>
 <html>
 <head lang="en">
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Губка боб</title>
+    <title>Губка Боб чат</title>
 
     <link href="public/css/bootstrap.css" rel="stylesheet" />
     <link href="public/css/custom.css" rel="stylesheet" />
+
     <script src="public/js/jquery-2.1.3.js"></script>
-    <script src="public/js/bootstrap.js"></script>
+    <script src="public/js/bubbles.js"></script>
     <script src="public/js/lib/jquery-ui.min.js"></script>
     <script src="public/js/src/jquery.textanimation.js"></script>
-    <link rel="shortcut icon" href="public/favicon.png" />
+    <script src="public/js/textControls.js"></script>
 
-
+    <link rel="shortcut icon" href="favicon.png" />
 
 <body>
-<div style="padding: 100px;">
-<h1>Чат губки Боба</h1>
-<!-- Вот в этих 2-х div'ах будут идти наши сообщения из чата -->
-<div class="chat r4">
-<div id="chat_area"><!-- Сюда мы будем добавлять новые сообщения --></div>
+<div>
+    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7 " id="half">
+        <textarea class="chat-area">
+            </textarea>
+        </div>
+    <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5" >
+        <div class="left-panel">
+            <div class="users-panel">
+                <textarea class="users-panel">
+                    DFSVSVSDVS
+                </textarea>
+            </div>
+            <div class="message-panel">
+                <input type="text" id="name" class="btn-lg" placeholder="Введите сообщение" autofocus>
+            </div>
+            <div class="message-button">
+                <button id="login-button" value="submit" class="btn btn-lg btn-primary btn-block" type="submit">Войти</button>
+            </div>
+            <div class="smile-panel">
+                RRRRRRRRRRRRRRRRRRRRIIIIIIIITFIFVII
+            </div>
+        </div>
+    </div>
 </div>
-<form id="pac_form" action="">
-    <table style="width: 100%;">
-        <tr>
-<!--            <td>Имя:</td>-->
-            <td>Сообщение:</td>
-            <td></td>
-        </tr>
-        <tr>
-            <!-- Поле ввода имени -->
-            <td><input type="text" id="pac_name" class="r4" value="Гость"></td>
 
-            <!-- Поле ввода сообщения -->
-            <td style="width: 80%;"><input type="text" id="pac_text" class="r4" value=""></td>
+<div id="bubbles">
+    <img class="bubble" id="bubble" style="display:none;" width="200px" height="200px" src="public/img/bubble_blue.png" >
+</div>
 
-            <!-- Кнопка "Отправить" -->
-            <td><input type="submit" value="Отправить"></td>
-        </tr>
-    </table>
-</form>
+<br><br><br><br>
+<div>
+    <h5 class="footer text-center">&copy Rusinov Alexandr 2015</h5>
 </div>
 </body>
 
 <script>
-    $(function () {
-        $("#pac_form").submit(Send); // вешаем на форму с именем и сообщением событие которое срабатывает кодга нажата кнопка "Отправить" или "Enter"
-        $("#pac_text").focus(); // по поле ввода сообщения ставим фокус
-        setInterval("Load();", 2000); // создаём таймер который будет вызывать загрузку сообщений каждые 2 секунды (2000 милесукунд)
+    jQuery(function ($) {
+        $("#login-form").submit(function (e) {
+            e.preventDefault();
+            registr();
+        });
+
     });
-    // Функция для отправки сообщения
-    function Send() {
-        // Выполняем запрос к серверу с помощью jquery ajax: $.post(адрес, {параметры запроса}, функция которая вызывается по завершению запроса)
-        $.post("ajax.php",
-            {
-                act: "send",  // указываем скрипту, что мы отправляем новое сообщение и его нужно записать
-                name: $("#pac_name").val(), // имя пользователя
-                text: $("#pac_text").val() //  сам текст сообщения
-            },
-            Load ); // по завершению отправки вызвовем функцию загрузки новых сообщений Load()
 
-        $("#pac_text").val(""); // очистим поле ввода сообщения
-        $("#pac_text").focus(); // и поставим на него фокус
-
-        return false; // очень важно из Send() вернуть false. Если этого не сделать то произойдёт отправка нашей формы, те страница перезагрузится
+    function registr() {
+        var login = $("#name").val();
+        (!login) ? login = "Гость" : login;
+        var data =  {act: "name", name: login};
+        $.post("ajax.php",{act: "name", name: login}, callback());
     }
 
-    var last_message_id = 0; // номер последнего сообщения, что получил пользователь
-    var load_in_process = false; // можем ли мы выполнять сейчас загрузку сообщений. Сначала стоит false, что значит - да, можем
-
-    // Функция для загрузки сообщений
-    function Load() {
-        // Проверяем можем ли мы загружать сообщения. Это сделанно для того, что бы мы не начали загрузку заново, если старая загрузка ещё не закончилась.
-        if(!load_in_process)
-        {
-            load_in_process = true; // загрузка началась
-            // отсылаем запрос серверу, который вернёт нам javascript
-            $.post("ajax.php",
-                {
-                    act: "load", // указываем на то что это загрузка сообщений
-                    last: last_message_id, // передаём номер последнего сообщения который получил пользователь в прошлую загрузку
-                    rand: (new Date()).getTime()
-                },
-                function (result) { // в эту функцию в качестве параметра передаётся javascript код, который мы должны выполнить
-                    eval(result); // выполняем скрипт полученный от сервера
-                    $(".chat").scrollTop($(".chat").get(0).scrollHeight); // прокручиваем сообщения вниз
-                    load_in_process = false; // говорим что загрузка закончилась, можем теперь начать новую загрузку
-                });
-        }
+    function callback(response) {
+        var container = $("login-container");
+        console.log(container);
+        container.empty();
+        $("#reg_err").append(response);
     }
+
 </script>
 </html>

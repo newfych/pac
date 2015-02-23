@@ -145,6 +145,61 @@ input[type=text],textarea {
     border-bottom-right-radius: 0;
 }
 
+.chat-area
+{
+    height: 800px;
+    width: 90%;
+    margin-top: 40px;
+    margin-right: 40px;
+    margin-left: 5%;
+    resize: none;
+    padding: 0px 0px 0px 0px;
+    background: rgba(0,0,0,0);
+    -moz-box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.3);
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.3);
+}
+
+.left-panel
+{
+    height: 800px;
+    width: 90%;
+    margin-top: 40px;
+    margin-right: 40px;
+    margin-left: 5%;
+    padding: 0px 0px 0px 0px;
+    -moz-box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.3);
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.3);
+}
+
+.users-panel{
+    height: 400px;
+    resize: none;
+    background: rgba(0,0,0,0);
+}
+.message-panel{
+    width: 90%;
+    height: 46px;
+    margin-top: 10px;
+    margin-left: 5%;
+
+
+}
+.message-button{
+    width: 80%;
+    margin-top: 10px;
+    margin-left: 10%;
+
+}
+.smile-panel{
+    width: 90%;
+    height: 250px;
+    margin-left: 5%;
+    margin-top: 10px;
+
+
+}
 .account-wall
 {
     margin-top: 50px;

@@ -1,4 +1,5 @@
 <?php
+echo 'YFOYTFG)FPIFOV';
 $config = array( 'hostname' => 'localhost',
                     'username' => 'root',
                     'password' => '',
@@ -18,10 +19,11 @@ if( !mysql_select_db($config['dbname']) )
 Header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 Header("Content-Type: text/javascript; charset=utf-8");
 
+echo $_POST;
 // Check send or load action
 if( isset($_POST['act']) ) 
 {
-	// $_POST['act'] - существует
+	echo "JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ";
 	switch ($_POST['act'])
 	{
         case "name" : // если она раняется send, вызываем функцию Send()
@@ -39,26 +41,21 @@ function Name(){
     echo 'HALLLLOOOOOOOOOOOOOOO';
 }
 // Функция выполняем сохранение сообщения в базе данных
-function Send()
-{
-	// тут мы получили две переменные переданные нашим java-скриптом при помощи ajax
-	// это:  $_POST['name'] - имя пользователя
-	// и $_POST['text'] - сообщение
+function Send() {
+
+	$name = substr($_POST['name'], 0, 10);
+    $name = trim($name);
+	$name = strip_tags($name);
+	$name = mysql_real_escape_string($name);
 	
-	$name = substr($_POST['name'], 0, 200); // обрезаем до 200 символов 
-	$name = htmlspecialchars($name); // заменяем опасные теги (<h1>,<br>, и прочие) на безопасные
-	$name = mysql_escape_string($name);
-	
-	$text = substr($_POST['text'], 0, 200); // обрезаем до 200 символов
-	$text = htmlspecialchars($text); // заменяем опасные теги (<h1>,<br>, и прочие) на безопасные
-	$text = mysql_escape_string($text); // функция экранирует все спец-символы в unescaped_string , вследствие чего, её можно безопасно использовать в mysql_query()
-	
-	// добавляем новую запись в таблицу messages
+	$text = substr($_POST['text'], 0, 40);
+    $text = trim($text);
+	$text = strip_tags($text);
+	$text = mysql_real_escape_string($text);
+
 	mysql_query("INSERT INTO messages (name,text) VALUES ('" . $name . "', '" . $text . "')");
 }
 
-
-// функция выполняем загрузку сообщений из базы данных и отправку их пользователю через ajax виде java-скрипта
 function Load()
 {
 	// тут мы получили переменную переданную нашим java-скриптом при помощи ajax

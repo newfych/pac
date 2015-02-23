@@ -36,7 +36,7 @@
             .css({"z-index": zIndex, "width": initW, "height": initH,"left": left, "bottom": "0%"})
             .animate({"bottom": lifeTime,"width": w , "height": h},
             {queue: false, duration: delay, easing: "linear",
-                complete: function(){console.log($(this).remove())}});
+                complete: function(){$(this).remove()}});
     }
 
     function getRandomInt(min, max) {
