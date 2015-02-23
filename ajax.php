@@ -16,7 +16,6 @@ if( !mysql_select_db($config['dbname']) )
 }
 // Disable cache
 Header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
-
 Header("Content-Type: text/javascript; charset=utf-8");
 
 // Check send or load action
@@ -25,17 +24,20 @@ if( isset($_POST['act']) )
 	// $_POST['act'] - существует
 	switch ($_POST['act'])
 	{
+        case "name" : // если она раняется send, вызываем функцию Send()
+            Name();break;
 		case "send" : // если она раняется send, вызываем функцию Send()
-			Send();
-			break;
+			Send();break;
 		case "load" : // если она раняется load, вызываем функцию Load()
-			Load();
-			break;
+			Load();break;
 		default : // если ни тому и не другому  - выходим
 			exit();
 	}
 }
 
+function Name(){
+    echo 'HALLLLOOOOOOOOOOOOOOO';
+}
 // Функция выполняем сохранение сообщения в базе данных
 function Send()
 {

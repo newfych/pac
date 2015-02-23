@@ -14,7 +14,6 @@
     function createBubbles() {
         var bubbles = $("#bubbles");
         var bubble = $("#bubble");
-        console.log(bubble);
         var initSize = 2;
         var aspect = $( window ).height()/$( window ).width();
         var initW = initSize.toString() + "%";
