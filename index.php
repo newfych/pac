@@ -6,14 +6,12 @@
 
     <title>Губка Боб чат</title>
 
-    <link href="public/css/liMarquee.css" rel="stylesheet" />
     <link href="public/css/bootstrap.css" rel="stylesheet" />
     <link href="public/css/bootstrap.css" rel="stylesheet" />
     <link href="public/css/custom.css" rel="stylesheet" />
     <script src="public/js/jquery-2.1.3.js"></script>
     <script src="public/js/lib/jquery-ui.min.js"></script>
     <script src="public/js/src/jquery.textanimation.js"></script>
-    <script src="public/js/jquery.liMarquee.js"></script>
     <link rel="shortcut icon" href="favicon.png" />
 
 <body>
@@ -55,60 +53,43 @@
 </body>
 <script>
     $(function(){
-//        var bubble = $("#bubble");
-////        var bubbles = $("#bubbles");
-////        var bubble2 = bubble.clone().appendTo(bubbles);
+
         var wall = $("#wall");
         wall.fadeIn(1000);
-//
-//        //var myVar = setInterval(function(){ myTimer() }, 100);
-//
-//        function myTimer() {bubble.animate({top: "-=120%"}, 2000, myTimer());
-//
-//        var marquee = bubble;
-//        marquee.css({"overflow": "hidden", "width": "100%"});
-//
-//        // оболочка для текста ввиде span (IE не любит дивы с inline-block)
-//        marquee.wrapInner("<span>");
-//        marquee.find("span").css({ "width": "50%", "display": "inline-block", "text-align":"center" });
-//        marquee.append(marquee.find("span").clone()); // тут у нас два span с текстом
-//
-//        marquee.wrapInner("<div>");
-//        marquee.find("div").css("width", "200%");
-//
-//        var reset = function() {
-//            $(this).css("margin-left", "0%");
-//            $(this).animate({ "margin-left": "-100%" }, 12000, 'linear', reset);
-//        };
-//
-//        reset.call(marquee.find("div"));
-//        }
+
+//        var bubbles = $("#bubbles");
+//        var bubble2 = bubble.clone().appendTo(bubbles);
+
+        var bubble = $("#bubble");
+        bubble.css({"left": "20", "bottom": "0"});
+        bubble.animate({"bottom": "120%"}, { queue:false, duration:3000 });
     });
 
-////////////////////////////////////////////////
-//    $(document).ready(function(){
-//        intervalId=setTimeout(function(){ banner(); },1000);
-//    });
-//
-//    function banner(){
-//        $('#jag').animate({left: "500px"}, 5000,function(){
-//            $('#jag').hide();
-//            $('#headp').text("Jaguar - The best and coolest car ever!");
-//            $('#headp').animate({fontSize:"4em"},"slow",function(){
-//                $('#jag').animate({left:"0px"},0,function(){
-//                        $('#headp').text("");
-//                        $('#jag').show();
-//                        banner();
-//                    }
-//                );
-//            });
-//        });
-//    }
+    function setBubbles(){
+        setInterval(function(){
+            createBubbles();
+        }, getRandomInt(3, 7)*1000)
+    }
+
+    function createBubbles(){
+        var bubbles = $("#bubbles");
+        var bubble = $("#bubble");
+        var len = getRandomInt(5, 10);
+        var bubblesArray = [];
+        for (i=0; i<len; i++){
+            var size = (getRandomInt(3, 7)/5);
+//            bubblesArray[i] = bubble.clone().appendTo(bubbles);
+            bubble.clone()
+                .css({"width": size, "height": size})
+                .animate({"bottom": "120%"}, { queue:false, duration:3000 });
+        }
 
 
 
-
-
+    }
+    function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
 
 
 </script>
