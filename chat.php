@@ -22,7 +22,7 @@
 <div class="chat r4">
 <div id="chat_area"><!-- Сюда мы будем добавлять новые сообщения --></div>
 </div>
-<form id="pac_form" action=""><!-- Наша форма с именем, сообщением и кнопкой для отправки -->
+<form id="pac_form" action="">
     <table style="width: 100%;">
         <tr>
 <!--            <td>Имя:</td>-->

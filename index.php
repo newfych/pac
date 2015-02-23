@@ -17,13 +17,9 @@
 
 <body>
 <?
-if(isset($_SESSION['name'])){
 
-}
-
-
-?>
-<div class="container">
+    if(!isset($_SESSION['name'])) {
+    echo '<div class="container">
     <div class="row" id="row">
         <div class="col-sm-6 col-md-6 col-sm-offset-2 hidden-xs login" >
             <div class="text-center login-title demo" id="demo_roll2">  Войти в чат Губки Боба</div>
@@ -31,14 +27,14 @@ if(isset($_SESSION['name'])){
         <div class="col-sm-6 col-md-4 col-md-offset-4 login" id="login-form">
             <div class="account-wall" id="wall" style="display:none;">
                 <img class="profile-img" src="public/img/Edit.png">
-                <form class="form-signin">
+                <form class="form-signin" >
                     <div class="form-div">
                         <input type="text" class="form-control" placeholder="Введите имя" autofocus>
                     </div>
                         <h3 class="text-center describe">Введите ваше имя или войдите как гость</h3>
                     <div class="form-div">
                         <button class="btn btn-lg btn-primary btn-block" type="submit">
-                        Войти</button>
+        Войти</button>
                     </div>
                 </form>
             </div>
@@ -57,7 +53,10 @@ if(isset($_SESSION['name'])){
 </div>
 <div id="bubbles">
     <img class="bubble" id="bubble" style="display:none;" width="200px" height="200px" src="public/img/bubble_blue.png" >
-</div>
+</div>';
+
+}
+?>
 </body>
 <script>
     $(function() {
@@ -73,10 +72,10 @@ if(isset($_SESSION['name'])){
     }
 
     function createBubbles() {
-        console.log('inside Create');
         var bubbles = $("#bubbles");
         var bubble = $("#bubble");
-        var initSize = 3;
+        console.log(bubble);
+        var initSize = 2;
         var aspect = $( window ).height()/$( window ).width();
         var initW = initSize.toString() + "%";
         var initH = (initSize / aspect).toString() + "%";
@@ -86,16 +85,19 @@ if(isset($_SESSION['name'])){
         var yPos = (getRandomInt(1, 15) + 10);
         var delay = (getRandomInt(3, 10) * 1000) + 15000;
         var floatSide = getRandomInt(1, 100);
-        (floatSide > 50) ? yPos = 95 - yPos : yPos;
+        (floatSide > 50) ? yPos = 95 - yPos : yPos-3;
         var left = yPos.toString() + "%";
         var zIndexType = getRandomInt(1, 100);
         var zIndex = 0;
         (zIndexType > 50) ? zIndex = -1 : zIndex;
+        var lifeTime = (getRandomInt(5, 12)*10).toString() + "%";
 
         bubble.clone().appendTo(bubbles)
-            .css({"z-index": zIndex, "width": initW, "height": initH,"left": left, "bottom": "10%"})
-            .animate({"bottom": "120%","width": w , "height": h},
-            {queue: false, duration: delay});
+            .css({"z-index": zIndex, "width": initW, "height": initH,"left": left, "bottom": "0%"})
+            .animate({"bottom": lifeTime,"width": w , "height": h},
+            {queue: false, duration: delay, easing: "linear",
+            complete: function(){console.log($(this).remove())}});
+
     }
 
     function getRandomInt(min, max) {
