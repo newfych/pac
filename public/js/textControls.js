@@ -6,11 +6,11 @@
         });
         $("div#demo_roll2").textAnimation({
             mode: "roll",
-            minsize: 30,
-            maxsize: 25,
-            magnification: 10,
-            fixed: "top",
-            delay: 10,
+            minsize: 60,
+            maxsize: 50,
+            magnification: 30,
+            //fixed: "top",
+            delay: 20,
             stuff: 1
         });
         $("div#demo_step1").textAnimation({

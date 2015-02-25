@@ -16,8 +16,20 @@ body { padding:0; margin:0;  min-height:100%;
 html,body{
     overflow-y:hidden;
 }
+@font-face {
+    font-family:sponge-bob;
+    src: url(../font/spongefont.ttf);
+}
+
+@font-face {
+    font-family:sponge-bob;
+    src: url(../font/spongefont.eot);
+}
 
 
+.title-div{
+    height: 110px;
+}
 /* Важное свойство */
 .chat {
 	height: 500px;
@@ -215,16 +227,18 @@ input[type=text],textarea {
 }
 .login-title
 {
-    color: #337ab7;
+    color: #e7e88c;
     -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: #2e6da4;
-    margin-top: 100px;
+    -webkit-text-stroke-color: #606060;
+    font-family: sponge-bob;
+    /*float: left;*/
+    margin-top: 20px;
     font-size: 50px;
     font-weight: 700;
-    -moz-text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.3);
-    -webkit-text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.3);
-    text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.3);
-    display: block;
+    -moz-text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.3);
+    -webkit-text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.3);
+    text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.3);
+    /*display: block;*/
 }
 .describe
 {
@@ -240,8 +254,11 @@ input[type=text],textarea {
     margin: 0 auto 10px;
     display: block;
 }
+.chat.page {
+    display: none;
+}
 .footer{
-    color: rgba(12, 6, 0, 0.04);
+    color: rgba(12, 6, 0, 0.01);
 }
 .bubble{
     overflow: auto;

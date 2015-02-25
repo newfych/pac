@@ -21,24 +21,28 @@
 <div>
     <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7 " id="half">
         <div class="chat-area">
-            GHIGLJKBJGUIIVBI
+            <ul class="messages">
+                <li>TEST STRING</li>
+            </ul>
         </div>
     </div>
     <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5" >
         <div class="left-panel">
             <div class="users-panel">
                 <div class="users-panel">
-                    DFSVSVSDVS
+
                 </div>
             </div>
-            <div class="message-panel">
-                <input type="text" id="name" class="btn-lg" placeholder="Введите сообщение" autofocus>
-            </div>
-            <div class="message-button">
-                <button id="login-button" value="submit" class="btn btn-lg btn-primary btn-block" type="submit">Отправить</button>
-            </div>
-            <div class="smile-panel">
-                RRRRRRRRRRRRRRRRRRRRIIIIIIIITFIFVII
+            <form id="message-form">
+                <div class="message-panel">
+                    <input type="text" id="message-text" class="form-control" placeholder="Введите сообщение" autofocus>
+                </div>
+                <div class="message-button">
+                    <button id="message-button" value="submit" class="btn btn-lg btn-primary btn-block" type="submit">Отправить</button>
+                </div>
+            </form>
+            <div class="results">
+
             </div>
         </div>
     </div>
@@ -47,35 +51,34 @@
 <div id="bubbles">
     <img class="bubble" id="bubble" style="display:none;" width="200px" height="200px" src="public/img/bubble_blue.png" >
 </div>
-
-<br><br><br><br>
 <div>
     <h5 class="footer text-center">&copy Rusinov Alexandr 2015</h5>
 </div>
 </body>
 
 <script>
-    jQuery(function ($) {
-        $("#login-form").submit(function (e) {
-            e.preventDefault();
-            registr();
-        });
+jQuery(function($){$("#message-form").submit(function (e){e.preventDefault();Send();});});
 
+function Send() {
+    var text = $("#message-text").val();
+    var data =  {act: "send", name: text};
+
+    $.post("ajax.php", data, Load());
+}
+
+var last_message_id = 0;
+var load_in_process = false;
+
+function Load() {
+    $.ajax({
+        type: 'POST',
+        url: 'ajax.php',
+        data: {act: "load",last:last_message_id},
+        success: function (data) {
+            $('.results').html(data);
+        }
     });
-
-    function registr() {
-        var login = $("#name").val();
-        (!login) ? login = "Гость" : login;
-        var data =  {act: "name", name: login};
-        $.post("ajax.php",{act: "name", name: login}, callback());
-    }
-
-    function callback(response) {
-        var container = $("login-container");
-        console.log(container);
-        container.empty();
-        $("#reg_err").append(response);
-    }
+}
 
 </script>
 </html>
