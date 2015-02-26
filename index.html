@@ -98,7 +98,7 @@
     var container = $('.container');
     var loginTemplate = $('#login-template');
     var chatTemplate = $('#chat-template');
-    var evenMessage = false;
+    var odd = false;
 
     switchPage(loginTemplate);
 
@@ -152,7 +152,7 @@
     }
 
     socket.on('new message', function (data) {
-        evenMessage = (!evenMessage);
+        odd = (!odd);
         if (!data.message) return;
         var username = data.username;
         var message = data.message;
@@ -170,7 +170,7 @@
         msg = prepareString(message);
         var el = ('<div class="message-bubble"><div class="badge">'
                                 + '<span style="color: #ff6600;">'
-                                + username + ':</span><br>'
+                                + username + ':<br></span>'
                                 + '<span style="' + color + '">'
                                 + msg + '</span></div></div>');
         chatArea.append(el);
@@ -178,29 +178,58 @@
         }
 
     function driveMessage(){
+        var delay = 4000;
+        var Y = 5;
         var area = $('.chat-area');
         var bubble = $('.message-bubble').last();
         var message = $('.badge').last();
-//        var testH = test.outerHeight(false);
-//        var testW = test.outerWidth(false);
-//        console.log('testH: '+testH+'  testW: '+testW);
+        var messages = area.children();
+        var messCount = area.children().length;
+        var index = messCount - 1;
+        var prevMessage = messages.eq(index);
         var areaH = area.outerHeight(false);
-        var areaW = (area.outerWidth(false)/2);
-        console.log('areaH: '+areaH+'  areaW: '+areaW);
-        var messageH = message.outerHeight(false);
+        var areaW = (area.outerWidth(false) / 2);
+        var messageH = message.outerHeight(true);
         var messageW = message.outerWidth(false);
-        console.log('messageH: '+messageH+'  messageW: '+messageW);
         var dX = areaW - messageW;
         var dY = areaH - messageH;
+
+        if (index > 0) {
+            console.log(index);
+            for (var i=0; i<index; i++){
+                Y = Y + messages.eq(i).outerHeight(true)/2;
+            }
+        }
+
+        var S = areaH - Y - messageH;
+        delay = S / 700 * delay;
         var deltaX1 = getRandomInt(1, dX);
         var deltaX2 = getRandomInt(1, dX);
-        if (evenMessage){
+
+        if (odd) {
             deltaX1 = deltaX1 + areaW;
             deltaX2 = deltaX2 + areaW;
         }
-        console.log('dY: '+dY+'  dX: '+dX);
-        bubble.css({"top": dY, "right": deltaX1, "position":'absolute'});
-        console.log(message);
+
+        bubble.css({"top": dY, "right": deltaX1, "opacity": 0.7, "position":'absolute'});
+        bubble.animate({"top": Y, "right": deltaX2, "opacity": 1, "position":'absolute'},
+                {queue: false, duration: delay}, function (){});
+
+        if (S < 200){
+            var enemy = $('.message-bubble').first();
+            var delta = enemy.outerHeight(true)/2;
+            enemy.remove();
+            var msgs = area.children('.message-bubble');
+            var size = msgs.length;
+            var del =  delay;
+            for (var i=0; i < (size + 1); i++){
+                var msg = msgs.eq(i);
+                var y = msg.position().top - delta;
+                msg.animate({"top": y}, {queue: false, duration: del}, function (){});
+            }
+
+        }
+
     }
 
     function prepareString(str){
@@ -235,11 +264,11 @@
     }
 
     function randomColor(){
-        var maxBrightness = 200;
+        var maxBrightness = 180;
         var rgb = [];
         var totalColor;
         for (var i = 0; i< 3; i++) {
-            var x = getRandomInt(1, maxBrightness);
+            var x = getRandomInt(100, maxBrightness);
             rgb.push(x);
         }
         totalColor = 'color: rgba(' + rgb[0] + ', ' + rgb[1] + ', '+ rgb[2] +', 1);';
