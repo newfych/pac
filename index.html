@@ -98,7 +98,7 @@
     var container = $('.container');
     var loginTemplate = $('#login-template');
     var chatTemplate = $('#chat-template');
-    var evenMessage = true;
+    var evenMessage = false;
 
     switchPage(loginTemplate);
 
@@ -172,14 +172,18 @@
                                 + '<span style="color: #ff6600;">'
                                 + username + ':</span><br>'
                                 + '<span style="' + color + '">'
-                                + msg + '</span></div><br></div>');
+                                + msg + '</span></div></div>');
         chatArea.append(el);
         driveMessage();
         }
 
     function driveMessage(){
-        var area = $('.message-bubble');
-        var message = area.last();
+        var area = $('.chat-area');
+        var bubble = $('.message-bubble').last();
+        var message = $('.badge').last();
+//        var testH = test.outerHeight(false);
+//        var testW = test.outerWidth(false);
+//        console.log('testH: '+testH+'  testW: '+testW);
         var areaH = area.outerHeight(false);
         var areaW = (area.outerWidth(false)/2);
         console.log('areaH: '+areaH+'  areaW: '+areaW);
@@ -195,7 +199,7 @@
             deltaX2 = deltaX2 + areaW;
         }
         console.log('dY: '+dY+'  dX: '+dX);
-        message.css({"top": dY, "left": deltaX1, "position":'absolute'});
+        bubble.css({"top": dY, "right": deltaX1, "position":'absolute'});
         console.log(message);
     }
 
