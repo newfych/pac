@@ -59,7 +59,7 @@ input[type=text],textarea {
     text-align: center;
     vertical-align: middle;
     border-radius: 50%; /* may require vendor prefixes */
-    background: yellow;
+    background: url('../img/bubble_blue.png');
 }
 
 .circle{
@@ -195,7 +195,7 @@ input[type=text],textarea {
     margin-left: 5%;
 }
 #message-text{
-    height: 30px;
+    height: 46px;
 }
 .message-button{
     width: 80%;

@@ -30,7 +30,7 @@
         var zIndex = 0;
         (zIndexType > 50) ? zIndex = -1 : zIndex;
         (floatSide > 50) ? zIndex = 0 : zIndex;
-        if ($(".message-panel").length!=0){zIndex = -1;}
+        if ($("#chat-page").length!=0){zIndex = -1;}
         var lifeTime = (getRandomInt(3, 12)*10).toString() + "%";
 
         bubble.clone().appendTo(bubbles)
