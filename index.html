@@ -55,17 +55,13 @@
 <script type="text/template" id="chat-template">
 <div class="chat page" id="chat-page">
     <div class="col-xs-12 col-sm-7 " id="left-panel">
-        <div class="chat-area">
-            <ul class="messages">
-                <li>Chat-area</li>
-            </ul>
-        </div>
+        <div class="chat-area"></div>
     </div>
     <div class="col-xs-12 col-sm-5" >
         <div class="right-panel">
             <div class="users-panel">
                 <div class="users-panel">
-                    <h1>Users-panel</h1>
+                    <h1>Чичас в чате:</h1>
                 </div>
             </div>
             <div id="message-form">
@@ -105,13 +101,8 @@
 
     switchPage(loginTemplate);
 
-
-    var messages = $('');
-
-
     var username;
     var connected = false;
-//    var $currentInput = usernameInput.focus();
 
     function cleanInput (input) {
         return $.trim($('<div/>').text(input).text());
@@ -150,44 +141,85 @@
     function sendMessage () {
         var inputMessage = $('#message-text');
         var message = inputMessage.val();
+        if (message == '') return;
         message = cleanInput(message);
         if (message && connected) {
             inputMessage.val('');
+            inputMessage.focus();
             }
         socket.emit('new message', {message: message, username:username});
     }
 
-    console.log('end of script');
-//    function addChatMessage (data) {
-//
-//        }
+    socket.on('new message', function (data) {
+        if (!data.message) return;
+        var username = data.username;
+        var message = data.message;
+        console.log('User: ', username, 'send: ', message);
+        addChatMessage(data);
+        });
 
+    function addChatMessage(data){
+        var messages = $('.messages');
+        var chatArea = $('.chat-area');
+        if (!data) return;
+        var username = data.username;
+        var message = data.message;
+        var color = randomColor();
+        console.log(color);
+        msg = prepareString(message);
+        var el = ('<div class="badge"><span style="color: #ff6600;">'
+                                        + username + ':</span><br>' +
+                                        '<span style="' + color + '">'
+                                        + msg + '</span></div><br>');
+        chatArea.append(el);
+        }
 
+    function prepareString(str){
+        var arr = str.split(' ');
+        var totalStr = '';
+        var maxLength = 30;
+        var tS = [];
+        var size = arr.length;
+        var x;
+        for (var i = 0; i < size; i++) {
+            t = tS.length;
+            s = arr[i];
+            a = arr[i].length;
 
+            if (t === 0) {
+                tS[t] = arr[0];
+            }
+            else if ((tS[t-1].length + a) <= maxLength){
+                x = tS[t-1] + ' ' + s;
+                tS[t-1] = x;
+            }
+            else{
+                x = (tS[t-1] + '<br>').toString();
+                tS[t-1] = x;
+                tS[(t)] = s;
+            }
+        }
+        for (var y = 0; y <tS.length; y++){
+            totalStr = totalStr + tS[y];
+        }
+        return totalStr;
+    }
 
-//
-//    function addMessageElement (el) {
-//        var $el = $(el);
-//        var options = {};
-//
-//        messages.prepend($el);
-////        $messages.append($el);
-//
-//        messages[0].scrollTop = messages[0].scrollHeight;
-//    }
-//
+    function randomColor(){
+        var maxBrightness = 200;
+        var rgb = [];
+        var totalColor;
+        for (var i = 0; i< 3; i++) {
+            var x = getRandomInt(1, maxBrightness);
+            rgb.push(x);
+        }
+        totalColor = 'color: rgba(' + rgb[0] + ', ' + rgb[1] + ', '+ rgb[2] +', 1);';
+        return totalColor;
+    }
 
-////
-//    inputMessage.click(function () {
-//        inputMessage.focus();
-//    });
-//
-//
-//
-//    socket.on('new message', function (data) {
-//        addChatMessage(data);
-//    });
-//
+    function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
 //    socket.on('user joined', function (data) {
 //        log(data.username + ' joined');
 //        addParticipantsMessage(data);

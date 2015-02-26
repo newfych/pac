@@ -34,9 +34,9 @@ io.on('connection', function (socket) {
 
     socket.on('new message', function (data) {
         console.log('Received message: ', data.message, ' from ', data.username);
-        socket.broadcast.emit('new message', {
-            username: socket.username,
-            message: data
+        io.emit('new message', {
+            username: data.username,
+            message: data.message
         });
     });
 
