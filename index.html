@@ -98,6 +98,7 @@
     var container = $('.container');
     var loginTemplate = $('#login-template');
     var chatTemplate = $('#chat-template');
+    var evenMessage = true;
 
     switchPage(loginTemplate);
 
@@ -151,6 +152,7 @@
     }
 
     socket.on('new message', function (data) {
+        evenMessage = (!evenMessage);
         if (!data.message) return;
         var username = data.username;
         var message = data.message;
@@ -165,14 +167,37 @@
         var username = data.username;
         var message = data.message;
         var color = randomColor();
-        console.log(color);
         msg = prepareString(message);
-        var el = ('<div class="badge"><span style="color: #ff6600;">'
-                                        + username + ':</span><br>' +
-                                        '<span style="' + color + '">'
-                                        + msg + '</span></div><br>');
+        var el = ('<div class="message-bubble"><div class="badge">'
+                                + '<span style="color: #ff6600;">'
+                                + username + ':</span><br>'
+                                + '<span style="' + color + '">'
+                                + msg + '</span></div><br></div>');
         chatArea.append(el);
+        driveMessage();
         }
+
+    function driveMessage(){
+        var area = $('.message-bubble');
+        var message = area.last();
+        var areaH = area.outerHeight(false);
+        var areaW = (area.outerWidth(false)/2);
+        console.log('areaH: '+areaH+'  areaW: '+areaW);
+        var messageH = message.outerHeight(false);
+        var messageW = message.outerWidth(false);
+        console.log('messageH: '+messageH+'  messageW: '+messageW);
+        var dX = areaW - messageW;
+        var dY = areaH - messageH;
+        var deltaX1 = getRandomInt(1, dX);
+        var deltaX2 = getRandomInt(1, dX);
+        if (evenMessage){
+            deltaX1 = deltaX1 + areaW;
+            deltaX2 = deltaX2 + areaW;
+        }
+        console.log('dY: '+dY+'  dX: '+dX);
+        message.css({"top": dY, "left": deltaX1, "position":'absolute'});
+        console.log(message);
+    }
 
     function prepareString(str){
         var arr = str.split(' ');
