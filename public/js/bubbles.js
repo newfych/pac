@@ -8,13 +8,13 @@
 
     function setBubbles() {
         setInterval(function(){createBubbles();},
-            getRandomInt(3, 7)*200)
+            getRandomInt(3, 7)*150)
     }
 
     function createBubbles() {
         var bubbles = $("#bubbles");
         var bubble = $("#bubble");
-        var initSize = 2;
+        var initSize = 3;
         var aspect = $( window ).height()/$( window ).width();
         var initW = initSize.toString() + "%";
         var initH = (initSize / aspect).toString() + "%";
@@ -31,7 +31,7 @@
         (zIndexType > 50) ? zIndex = -1 : zIndex;
         (floatSide > 50) ? zIndex = 0 : zIndex;
         if ($(".message-panel").length!=0){zIndex = -1;}
-        var lifeTime = (getRandomInt(5, 12)*10).toString() + "%";
+        var lifeTime = (getRandomInt(3, 12)*10).toString() + "%";
 
         bubble.clone().appendTo(bubbles)
             .css({"z-index": zIndex, "width": initW, "height": initH,"left": left, "bottom": "0%"})

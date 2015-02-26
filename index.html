@@ -18,21 +18,22 @@
 
     <link rel="shortcut icon" href="favicon.png" />
 
-<body>
+<!--Login template-->
 
-<!--Login page-->
+<script type="text/template" id="login-template">
 
-<div class="container login page" id="login-conteiner">
-    <!--<div class="col-sm-12 hidden-xs title-div text-center login-title demo login-title" id="demo_roll2">  Sponge Bob chat</div>-->
-    <div class="row" id="row">
+<div class="col-sm-12 hidden-xs title-div login-title demo login-title" id="demo_roll2">
+    <p>Sponge Bob chat   </p>
+</div>
+<div class="row" id="row">
     <div class="col-sm-6 col-md-4 col-md-offset-4" id="login-form">
         <div class="account-wall" id="wall" style="display:none;">
             <img class="profile-img" src="public/img/Edit.png">
-            <div class="form-signin" name="login">
+            <div class="form-signin">
                 <div class="form-div">
                     <input type="text" id="username" maxlength="14" class="form-control" placeholder="Введите имя" autofocus>
                 </div>
-                    <h3 class="text-center describe">Введите ваше имя или войдите как гость</h3>
+                <h3 class="text-center describe">Введите ваше имя или войдите как гость</h3>
                 <div class="form-div">
                     <button id="login-button" onclick="setUsername(this)" class="btn btn-lg btn-primary btn-block" >Войти</button>
                 </div>
@@ -47,29 +48,32 @@
     </div>
 </div>
 
-<!--Chat page-->
+<!--Chat template-->
 
+</script>
+
+<script type="text/template" id="chat-template">
 <div class="chat page" id="chat-page">
-    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7 " id="half">
+    <div class="col-xs-12 col-sm-7 " id="left-panel">
         <div class="chat-area">
             <ul class="messages">
                 <li>Chat-area</li>
             </ul>
         </div>
     </div>
-    <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5" >
-        <div class="left-panel">
+    <div class="col-xs-12 col-sm-5" >
+        <div class="right-panel">
             <div class="users-panel">
                 <div class="users-panel">
                     <h1>Users-panel</h1>
                 </div>
             </div>
             <form id="message-form">
-                <div class="message-panel">
+                <div class="form-div">
                     <input type="text" id="message-text" class="form-control" placeholder="Введите сообщение" autofocus>
                 </div>
                 <div class="message-button">
-                    <button id="message-button" value="submit" class="btn btn-lg btn-primary btn-block" type="submit">Отправить</button>
+                    <button id="message-button" onclick="sendMessage(this)" class="btn btn-lg btn-primary btn-block" type="submit">Отправить</button>
                 </div>
             </form>
             <div class="smiles">
@@ -78,7 +82,11 @@
         </div>
     </div>
 </div>
+</script>
 
+<body>
+
+<div class="container"></div>
 
 <!--Bubbles and footer    -->
 <div id="bubbles">
@@ -90,103 +98,106 @@
 </body>
 
 <script>
-    // Initialize varibles
-    var $window = $(window);
-    var $usernameInput = $('#username'); // Input for username
-    var $messages = $('.messages'); // Messages area
-    var $inputMessage = $('.inputMessage'); // Input message input box
+    var socket = io();
+    var container = $('.container');
+    var loginTemplate = $('#login-template');
+    var chatTemplate = $('#chat-template');
 
-    var $loginPage = $('.login.page'); // The login page
-    var $chatPage = $('.chat.page'); // The chatroom page
+    switchPage(loginTemplate);
 
-    // Prompt for setting a username
+
+    var messages = $('');
+
+
     var username;
     var connected = false;
-    var $currentInput = $usernameInput.focus();
-
-    var socket = io();
-
-    // Sets the client's username
-    function setUsername () {
-        console.log('set Username');
-        console.log($chatPage);
-        username = cleanInput($usernameInput.val().trim());
-
-        if (username == '') username = 'Гость';
-
-        if (username) {
-            $loginPage.fadeOut();
-            $chatPage.show();
-            $loginPage.off('click');
-            $currentInput = $inputMessage.focus();
-
-            socket.emit('add user', username);
-        }
-    }
-
-    function sendMessage () {
-        console.log('send Message');
-        var message = $inputMessage.val();
-        // Prevent markup from being injected into the message
-        message = cleanInput(message);
-        // if there is a non-empty message and a socket connection
-        if (message && connected) {
-            $inputMessage.val('');
-            addChatMessage({
-                username: username,
-                message: message
-            });
-            // tell server to execute 'new message' and send along one parameter
-            socket.emit('new message', message);
-        }
-    }
-
-    function log (message, options) {
-        var $el = $('<li>').addClass('log').text(message);
-        addMessageElement($el, options);
-    }
-
-    function addMessageElement (el) {
-        var $el = $(el);
-        var options = {};
-
-        $messages.prepend($el);
-//        $messages.append($el);
-
-        $messages[0].scrollTop = $messages[0].scrollHeight;
-    }
+//    var $currentInput = usernameInput.focus();
 
     function cleanInput (input) {
-        return $('<div/>').text(input).text();
+        return $.trim($('<div/>').text(input).text());
     }
 
-    $inputMessage.click(function () {
-        $inputMessage.focus();
-    });
+    function setUsername () {
+        var usernameInput = $('#username');
+        usernameInput.keypress(function(e){
+            if(e.keyCode==13){
+                setUsername();
+            }
+        });
+        username = cleanInput(usernameInput.val());
+        if (username == ''){
+            username = 'Гость';
+        }
+        socket.emit('add user', username);
+        switchPage(chatTemplate);
+    }
+
+    function switchPage(page){
+        page = $.trim(page.html());
+        var children = container.children();
+        if (children.length == 0){
+        }else{
+            children.remove();
+        }
+        container.append(page);
+    }
 
     socket.on('login', function (data) {
         connected = true;
-        var message = "Welcome to Socket.IO Chat – ";
+        console.log(data, 'Login succesfully');
     });
 
-    // Whenever the server emits 'new message', update the chat body
-    socket.on('new message', function (data) {
-        addChatMessage(data);
-    });
+    function sendMessage () {
+        var inputMessage = $('#message-text');
+        var message = inputMessage.val();
+        message = cleanInput(message);
+        if (message && connected) {
+            inputMessage.val('');
+            }
+        socket.emit('new message', {message: message, username:username});
+    }
 
-    socket.on('user joined', function (data) {
-        log(data.username + ' joined');
-        addParticipantsMessage(data);
-    });
+    console.log('end of script');
+//    function addChatMessage (data) {
+//
+//        }
 
-    socket.on('user left', function (data) {
-        log(data.username + ' left');
-        addParticipantsMessage(data);
-        removeChatTyping(data);
-    });
-</script>
 
-<script type="text/template" id="my-template">
 
+
+//
+//    function addMessageElement (el) {
+//        var $el = $(el);
+//        var options = {};
+//
+//        messages.prepend($el);
+////        $messages.append($el);
+//
+//        messages[0].scrollTop = messages[0].scrollHeight;
+//    }
+//
+
+////
+//    inputMessage.click(function () {
+//        inputMessage.focus();
+//    });
+//
+//
+//
+//    socket.on('new message', function (data) {
+//        addChatMessage(data);
+//    });
+//
+//    socket.on('user joined', function (data) {
+//        log(data.username + ' joined');
+//        addParticipantsMessage(data);
+//    });
+//
+//    socket.on('user left', function (data) {
+//        log(data.username + ' left');
+//        addParticipantsMessage(data);
+//        removeChatTyping(data);
+//    }
+//
 </script>
 </html>
