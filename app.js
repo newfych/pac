@@ -40,6 +40,13 @@ io.on('connection', function (socket) {
         });
     });
 
+    socket.on('new smile', function (data) {
+        console.log('Received smile: ', data.smile, ' from ', data.username);
+        io.emit('new smile', {
+            username: data.username,
+            smile: data.smile
+        });
+    });
     //socket.on('disconnect', function () {
     //    // remove the username from global usernames list
     //    if (addedUser) {

@@ -54,10 +54,10 @@
 
 <script type="text/template" id="chat-template">
 <div class="chat page" id="chat-page">
-    <div class="col-xs-12 col-sm-7 " id="left-panel">
+    <div class="col-xs-7" id="left-panel">
         <div class="chat-area"></div>
     </div>
-    <div class="col-xs-12 col-sm-5" >
+    <div class=" col-xs-5" >
         <div class="right-panel">
             <div class="right-top">
                 <div class="users-panel"></div>
@@ -138,7 +138,7 @@
         for (var i=1; i <= 12; i++){
             var row = (Math.floor(4 - (12 - (i - 1))/4));
             var col =  i - (row - 1)*4;
-            var image = ('<div class="smile"><img class="smile-badge" src="public/img/'+i+'.png"></div>');
+            var image = ('<div class="smile"><img class="smile-badge" onclick="sendSmile(this)" src="public/img/'+i+'.png"></div>');
             smiles.append(image);
             var smile = $('.smile').last();
             var y = margin + (row - 1) * size + (row - 1) * offset;
@@ -146,6 +146,11 @@
             console.log('y = ', y, ', x = ', x, ', s = ', smile);
             smile.css({"top": initY + y, "left": initX + x, "position":'absolute', "width": size, "height": size});
         }
+    }
+
+    function sendSmile(smile){
+        console.log('cool', smile);
+        socket.emit('new smile', {smile: smile, username:username});
     }
 
     function switchPage(page){
