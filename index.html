@@ -59,20 +59,20 @@
     </div>
     <div class="col-xs-12 col-sm-5" >
         <div class="right-panel">
-            <div class="users-panel">
-                <div class="users-panel">
-                    <h1>Чичас в чате:</h1>
+            <div class="right-top">
+                <div class="users-panel"></div>
+                <div id="message-form">
+                    <div class="form-div">
+                        <input type="text" id="message-text" class="form-control input-lg" placeholder="Введите сообщение" autofocus>
+                    </div>
+                    <div class="message-button">
+                        <button id="message-button" onclick="sendMessage(this)" class="btn btn-lg btn-primary btn-block" type="submit">Отправить</button>
+                    </div>
                 </div>
             </div>
-            <div id="message-form">
-                <div class="form-div">
-                    <input type="text" id="message-text" class="form-control input-lg" placeholder="Введите сообщение" autofocus>
-                </div>
-                <div class="message-button">
-                    <button id="message-button" onclick="sendMessage(this)" class="btn btn-lg btn-primary btn-block" type="submit">Отправить</button>
-                </div>
+            <div class="right-bottom">
+                 <div class="smiles"></div>
             </div>
-            <div class="smiles"></div>
         </div>
     </div>
 </div>
@@ -124,12 +124,28 @@
     }
 
     function setSmiles(){
+        var smiles = $('.smiles');
+        smiles.css({"width": "100%"});
+        var width = smiles.outerWidth(false);
+        var height = width * 0.75 + 'px';
+        smiles.css({"height": height});
+        var imageSize = 20; // (%)  percents of total width
+        var size = width * imageSize / 100;
+        var offset = (width - size*4) / 4;
+        var margin = offset / 2;
+        var initX = smiles.position().left;
+        var initY = smiles.position().top;
         for (var i=1; i <= 12; i++){
-            var image = ('<img class="badge" src="'+i+'.png">');
             var row = (Math.floor(4 - (12 - (i - 1))/4));
-            console.log('row = ', row);
+            var col =  i - (row - 1)*4;
+            var image = ('<div class="smile"><img class="smile-badge" src="public/img/'+i+'.png"></div>');
+            smiles.append(image);
+            var smile = $('.smile').last();
+            var y = margin + (row - 1) * size + (row - 1) * offset;
+            var x = margin + (col - 1) * size + (col - 1) * offset;
+            console.log('y = ', y, ', x = ', x, ', s = ', smile);
+            smile.css({"top": initY + y, "left": initX + x, "position":'absolute', "width": size, "height": size});
         }
-
     }
 
     function switchPage(page){
@@ -218,7 +234,6 @@
         first.remove();
         var area = $('.chat-area');
         var msgs = area.children('.message-bubble');
-        console.log(msgs);
         var size = msgs.length;
         var del =  delay/3;
         var y = 5;

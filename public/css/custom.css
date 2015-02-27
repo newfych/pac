@@ -83,8 +83,19 @@ input[type=text],textarea {
     background-size: 100%;
     background-repeat:repeat-y;
 }
-
-
+.smile-badge {
+    height: 100px;
+    width: 100px;
+    border: solid 1px #777777;
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 50%; /* may require vendor prefixes */
+    /*background: yellow;*/
+}
+.smile-badge:hover{
+    border: solid 2px #495277;
+}
 /***************************************************************************/
 /***************************************************************************/
 
@@ -186,9 +197,14 @@ input[type=text],textarea {
     -webkit-box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.3);
     box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.3);
 }
-
+.right-top{
+    height: 54%;
+}
+.right-bottom{
+    height: 46%;
+}
 .users-panel{
-    height: 400px;
+    height: 60%;
     resize: none;
     outline: none;
     -moz-appearance: none;
