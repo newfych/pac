@@ -1,6 +1,6 @@
 var http = require('http');
 var static = require('node-static');
-var port = 8080;
+var port = process.env.PORT || 8080;
 var file = new static.Server('.');
 
 var server = http.createServer(function (req, res) {
