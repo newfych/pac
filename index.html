@@ -174,8 +174,60 @@
                                 + '<span style="' + color + '">'
                                 + msg + '</span></div></div>');
         chatArea.append(el);
-        driveMessage();
+        driveChat();
         }
+
+    function driveChat(){
+        var area = $('.chat-area');
+        var bubble = $('.message-bubble').last();
+        var message = $('.badge').last();
+        var messages = area.children();
+        var messCount = area.children().length;
+        var index = messCount - 1;
+        var areaH = area.outerHeight(false);
+        var messageH = message.outerHeight(true);
+
+        var Y = 5;
+        if (index > 0) {
+            for (var i=0; i<index; i++){
+                Y = Y + messages.eq(i).outerHeight(true)/2;
+            }
+        }
+
+        var S = areaH - Y - messageH;
+        if (S < 200){
+            driveMessage();
+            scrollChat();
+        }else{
+            driveMessage();
+        }
+
+    }
+
+    function scrollChat(){
+        var delay = 4000;
+        var first = $('.message-bubble').first();
+        first.remove();
+        var area = $('.chat-area');
+        var msgs = area.children('.message-bubble');
+        console.log(msgs);
+        var size = msgs.length;
+        var del =  delay/3;
+        var y = 5;
+        for (var i=0; i < size; i++){
+            var msg = msgs.eq(i);
+            if (i > 0) {
+                y = 5;
+                for (x = 0; x < i; x++) {
+                    var m = msgs.eq(x);
+                    var h = m.outerHeight(true) / 2;
+                    y = y + h;
+                }
+            }
+            msg.animate({"top": y}, {queue: false, duration: del,
+                complete: function (){console.log('finish Y', i,' = ', msg.position().top);}});
+        }
+    }
 
     function driveMessage(){
         var delay = 4000;
@@ -186,7 +238,6 @@
         var messages = area.children();
         var messCount = area.children().length;
         var index = messCount - 1;
-        var prevMessage = messages.eq(index);
         var areaH = area.outerHeight(false);
         var areaW = (area.outerWidth(false) / 2);
         var messageH = message.outerHeight(true);
@@ -195,7 +246,6 @@
         var dY = areaH - messageH;
 
         if (index > 0) {
-            console.log(index);
             for (var i=0; i<index; i++){
                 Y = Y + messages.eq(i).outerHeight(true)/2;
             }
@@ -214,22 +264,6 @@
         bubble.css({"top": dY, "right": deltaX1, "opacity": 0.7, "position":'absolute'});
         bubble.animate({"top": Y, "right": deltaX2, "opacity": 1, "position":'absolute'},
                 {queue: false, duration: delay}, function (){});
-
-        if (S < 200){
-            var enemy = $('.message-bubble').first();
-            var delta = enemy.outerHeight(true)/2;
-            enemy.remove();
-            var msgs = area.children('.message-bubble');
-            var size = msgs.length;
-            var del =  delay;
-            for (var i=0; i < (size + 1); i++){
-                var msg = msgs.eq(i);
-                var y = msg.position().top - delta;
-                msg.animate({"top": y}, {queue: false, duration: del}, function (){});
-            }
-
-        }
-
     }
 
     function prepareString(str){

@@ -76,42 +76,14 @@ input[type=text],textarea {
     /*background: none;*/
     background: url('../img/bubble_blue.png')
     top left  fixed no-repeat;
-    /*-o-background-size: 100%;*/
+    -o-background-size: 100%;
     -webkit-background-size:100%;
     -moz-background-size:100%;
     -khtml-background-size:100%;
     background-size: 100%;
-    /*background-repeat:repeat-y;*/
+    background-repeat:repeat-y;
 }
 
-.badge1 {
-    height: 100px;
-    width: 100px;
-    display: table-cell;
-    text-align: center;
-    vertical-align: middle;
-    border-radius: 50%; /* may require vendor prefixes */
-    /*background: url('../img/bubble_blue.png');*/
-    background: #ffff00;
-}
-
-.circle{
-    margin:10px;
-    width:150px;
-    height:200px;
-    border-radius:100%;
-    background-color:#3D6AA2;
-    color:#fff;
-    text-align:center;
-    font-size:24px;
-    overflow:hidden;
-}
-
-.circle.one-line{line-height:100px;}
-.circle.multi-line{
-    padding-top:10px;
-    height:70px;
-}
 
 /***************************************************************************/
 /***************************************************************************/
@@ -196,7 +168,7 @@ input[type=text],textarea {
     -moz-appearance: none;
     resize: none;
     padding: 0px 0px 0px 0px;
-    background: rgba(248, 255, 220, 0.8);
+    background: rgba(225, 232, 153, 0.80);
     -moz-box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.3);
     -webkit-box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.3);
     box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.3);
