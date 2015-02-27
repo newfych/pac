@@ -278,7 +278,7 @@ input[type=text],textarea {
     bottom: 0px;
     width: 100%;
     color: #080808;
-    opacity: 0.3;
+    opacity: 0.27;
 }
 .bubble{
     overflow: auto;
