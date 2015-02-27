@@ -72,9 +72,7 @@
                     <button id="message-button" onclick="sendMessage(this)" class="btn btn-lg btn-primary btn-block" type="submit">Отправить</button>
                 </div>
             </div>
-            <div class="smiles">
-                <h1>Smiles</h1>
-            </div>
+            <div class="smiles"></div>
         </div>
     </div>
 </div>
@@ -122,6 +120,16 @@
         }
         socket.emit('add user', username);
         switchPage(chatTemplate);
+        setSmiles();
+    }
+
+    function setSmiles(){
+        for (var i=1; i <= 12; i++){
+            var image = ('<img class="badge" src="'+i+'.png">');
+            var row = (Math.floor(4 - (12 - (i - 1))/4));
+            console.log('row = ', row);
+        }
+
     }
 
     function switchPage(page){
@@ -195,7 +203,7 @@
         }
 
         var S = areaH - Y - messageH;
-        if (S < 200){
+        if (S < 100){
             driveMessage();
             scrollChat();
         }else{
@@ -224,8 +232,7 @@
                     y = y + h;
                 }
             }
-            msg.animate({"top": y}, {queue: false, duration: del,
-                complete: function (){console.log('finish Y', i,' = ', msg.position().top);}});
+            msg.animate({"top": y}, {queue: false, duration: del});
         }
     }
 
@@ -269,7 +276,7 @@
     function prepareString(str){
         var arr = str.split(' ');
         var totalStr = '';
-        var maxLength = 30;
+        var maxLength = 20;
         var tS = [];
         var size = arr.length;
         var x;
@@ -298,13 +305,16 @@
     }
 
     function randomColor(){
-        var maxBrightness = 180;
+        var maxBrightness = 64;
         var rgb = [];
         var totalColor;
         for (var i = 0; i< 3; i++) {
-            var x = getRandomInt(100, maxBrightness);
+            var x = getRandomInt(30, maxBrightness);
             rgb.push(x);
         }
+        var c = getRandomInt(0, 2);
+        rgb[c] = (rgb[c] * 4) - 1;
+        if (c == 1) rgb[c] = rgb[c] * 0.8;
         totalColor = 'color: rgba(' + rgb[0] + ', ' + rgb[1] + ', '+ rgb[2] +', 1);';
         return totalColor;
     }
