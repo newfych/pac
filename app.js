@@ -37,16 +37,21 @@ io.on('connection', function (socket) {
         io.emit('new message', {
             username: data.username,
             message: data.message
-        });
+        }, false);
     });
 
     socket.on('new smile', function (data) {
-        console.log('Received smile: ', data.smile, ' from ', data.username);
-        io.emit('new smile', {
+        console.log('Received smile: ', data.message, ' from ', data.username);
+        console.log('parsed ',parseInt(data.message));
+        io.emit('new message', {
             username: data.username,
-            smile: data.smile
-        });
+            message: parseInt(data.message)
+        }, true);
     });
+
+
+
+
     //socket.on('disconnect', function () {
     //    // remove the username from global usernames list
     //    if (addedUser) {

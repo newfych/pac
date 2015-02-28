@@ -123,6 +123,21 @@
         setSmiles();
     }
 
+    socket.on('login', function (data) {
+        connected = true;
+        console.log(data, 'Login succesfully');
+    });
+
+    function switchPage(page){
+        page = $.trim(page.html());
+        var children = container.children();
+        if (children.length == 0){
+        }else{
+            children.remove();
+        }
+        container.append(page);
+    }
+
     function setSmiles(){
         var smiles = $('.smiles');
         smiles.css({"width": "100%"});
@@ -135,38 +150,17 @@
         var margin = offset / 2;
         var initX = smiles.position().left;
         var initY = smiles.position().top;
-        for (var i=1; i <= 12; i++){
+        for (var i=1; i < 13; i++){
             var row = (Math.floor(4 - (12 - (i - 1))/4));
             var col =  i - (row - 1)*4;
-            var image = ('<div class="smile"><img class="smile-badge" onclick="sendSmile(this)" src="public/img/'+i+'.png"></div>');
+            var image = ('<div class="smile"><img class="smile-badge" onclick="sendSmile(' + i + ')" src="public/img/'+i+'.png"></div>');
             smiles.append(image);
             var smile = $('.smile').last();
             var y = margin + (row - 1) * size + (row - 1) * offset;
             var x = margin + (col - 1) * size + (col - 1) * offset;
-            console.log('y = ', y, ', x = ', x, ', s = ', smile);
             smile.css({"top": initY + y, "left": initX + x, "position":'absolute', "width": size, "height": size});
         }
     }
-
-    function sendSmile(smile){
-        console.log('cool', smile);
-        socket.emit('new smile', {smile: smile, username:username});
-    }
-
-    function switchPage(page){
-        page = $.trim(page.html());
-        var children = container.children();
-        if (children.length == 0){
-        }else{
-            children.remove();
-        }
-        container.append(page);
-    }
-
-    socket.on('login', function (data) {
-        connected = true;
-        console.log(data, 'Login succesfully');
-    });
 
     function sendMessage () {
         var inputMessage = $('#message-text');
@@ -176,40 +170,69 @@
         if (message && connected) {
             inputMessage.val('');
             inputMessage.focus();
-            }
+        }
         socket.emit('new message', {message: message, username:username});
     }
 
-    socket.on('new message', function (data) {
+    socket.on('new message', function (data, smile) {
         odd = (!odd);
         if (!data.message) return;
         var username = data.username;
         var message = data.message;
-        console.log('User: ', username, 'send: ', message);
-        addChatMessage(data);
-        });
+        console.log('Received ', data, 'from server with smile = ', smile);
+        addChatMessage(data, smile);
+    });
 
-    function addChatMessage(data){
+
+    function sendSmile(data){
+        console.log('emit smile ', data,' to server');
+
+        socket.emit('new smile', {message: data, username:username});
+    }
+
+//    socket.on('new smile', function (data) {
+//        odd = (!odd);
+//        var username = data.username;
+//        var smile = data.smile;
+//        console.log('Received smile from server', smile);
+////        addChatMessage(data);
+//    });
+
+    function addChatMessage(data, smile){
+        console.log(smile);
         var messages = $('.messages');
+        var el= '';
         var chatArea = $('.chat-area');
         if (!data) return;
         var username = data.username;
         var message = data.message;
-        var color = randomColor();
-        msg = prepareString(message);
-        var el = ('<div class="message-bubble"><div class="badge">'
-                                + '<span style="color: #ff6600;">'
-                                + username + ':<br></span>'
-                                + '<span style="' + color + '">'
-                                + msg + '</span></div></div>');
+
+        if (!smile){
+            var color = randomColor();
+            msg = prepareString(message);
+            el = ('<div class="message-bubble"><div class="badge">'
+                                    + '<span style="color: #ff6600;">'
+                                    + username + ':<br></span>'
+                                    + '<span style="' + color + '">'
+                                    + msg + '</span></div></div>');
+        }else if (smile){
+//            var image = ('<div class="smile"><img class="smile-badge" onclick="sendSmile(' + i + ')" src="public/img/'+i+'.png"></div>');
+
+            el = ('<div class="message-bubble">' +
+            '<div class="smile-badge">'
+            + '<img class="smile-badge" src="public/img/'+ data.message + '.png">' +
+            '</div></div>');
+        }
+
         chatArea.append(el);
+
         driveChat();
         }
 
     function driveChat(){
         var area = $('.chat-area');
         var bubble = $('.message-bubble').last();
-        var message = $('.badge').last();
+        var message = $('.badge .smile-badge').last();
         var messages = area.children();
         var messCount = area.children().length;
         var index = messCount - 1;
