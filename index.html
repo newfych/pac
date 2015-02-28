@@ -216,12 +216,11 @@
                                     + '<span style="' + color + '">'
                                     + msg + '</span></div></div>');
         }else if (smile){
-//            var image = ('<div class="smile"><img class="smile-badge" onclick="sendSmile(' + i + ')" src="public/img/'+i+'.png"></div>');
-
-            el = ('<div class="message-bubble">' +
-            '<div class="smile-badge">'
-            + '<img class="smile-badge" src="public/img/'+ data.message + '.png">' +
-            '</div></div>');
+            el = '<div class="message-bubble"><div class="row">'
+                + '<div style="color: #ff6600;">' + username
+                + '<div class="smile-badge">'
+                + '<img class="smile-badge" src="public/img/'+ data.message + '.png">'
+                + '</div></div></div></div>';
         }
 
         chatArea.append(el);
